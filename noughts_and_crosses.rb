@@ -19,9 +19,8 @@ class Game
 
   def round
     puts "Player #{@current_player.id} (#{@current_player.symbol}) - it's your turn to pick a cell!"
-    puts "Enter a number:"
-    chosen_cell = gets().chomp.to_i - 1
-    @current_player.assign_cell(@board, chosen_cell)
+    puts "Enter a number (1-9):"
+    @current_player.assign_cell(@board)
     self.make_groups
     self.render_board
     self.check_for_winner
@@ -90,13 +89,18 @@ class Player
     @id = id
   end
 
-  def assign_cell (board, cell)
-    if !board[cell] 
+  def assign_cell (board)
+    cell = gets().chomp.to_i - 1
+    if cell < 0 || cell > 8
+      puts "Cell #{cell + 1} doesn't exist... let's try that again"
+      puts "Enter a number (1-9):"
+      assign_cell(board)
+    elsif !board[cell] 
       board[cell] = self.symbol
     else 
       puts "Hmmm Cell #{cell + 1} seems to be taken- try somewhere else"
-      chosen_cell = gets().chomp.to_i - 1
-      assign_cell(board, chosen_cell)
+      puts "Enter a number (1-9):"
+      assign_cell(board)
     end
   end
 end
