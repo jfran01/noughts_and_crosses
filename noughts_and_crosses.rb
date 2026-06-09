@@ -8,6 +8,11 @@ class Game
     @board = Array.new(9)
     @@players.push(@player_one, @player_two)
   end
+
+  def switch_players
+    @@players.rotate!
+    @current_player = @@players[0]
+  end
 end
 
 class Player
