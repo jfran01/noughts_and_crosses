@@ -22,4 +22,18 @@ class Player
     @symbol = symbol
     @id = id
   end
+
+  def assign_cell (board, cell)
+    if !board[cell] 
+      if @symbol == "noughts"
+        board[cell] = "O"
+      elsif @symbol == "crosses"
+        board[cell] = "X"
+      end
+    else 
+      puts "Hmmm Cell #{cell} seems to be taken- try somewhere else"
+      chosen_cell = gets().chomp.to_i
+      assign_cell(board, chosen_cell)
+    end
+  end
 end
