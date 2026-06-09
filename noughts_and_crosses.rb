@@ -8,7 +8,7 @@ class Game
     @current_player = @player_one
     @board = Array.new(9)
     @@players.push(@player_one, @player_two)
-    self.game()
+    # self.game()
   end
 
   def game 
@@ -25,6 +25,21 @@ class Game
     self.render_board()
     self.check_for_winner
     self.switch_players
+  end
+
+  def make_groups 
+    @rows = []
+    @groups = []
+    self.board.each_slice (3) do |row|
+      @rows.push(row)
+      @groups.push(row)
+    end
+    self.board[0..2].each_with_index do |cell, index|
+      column = [cell, self.board[index + 3], self.board[index + 6]]
+      @groups.push(column)
+    end
+    @groups.push(self.board.values_at(0, 4, 8))
+    @groups.push(self.board.values_at(2, 4, 6))
   end
 
   def render_board
@@ -90,4 +105,5 @@ class Player
   end
 end
 
-Game.new()
+new_game = Game.new()
+new_game.make_groups
