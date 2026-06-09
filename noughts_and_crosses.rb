@@ -8,7 +8,7 @@ class Game
     @current_player = @player_one
     @board = Array.new(9)
     @@players.push(@player_one, @player_two)
-    # self.game()
+    self.game()
   end
 
   def game 
@@ -22,7 +22,8 @@ class Game
     puts "Enter a number:"
     chosen_cell = gets().chomp.to_i - 1
     @current_player.assign_cell(@board, chosen_cell)
-    self.render_board()
+    self.make_groups
+    self.render_board
     self.check_for_winner
     self.switch_players
   end
@@ -44,7 +45,7 @@ class Game
 
   def render_board
     board_interface = []
-    self.board.each_slice (3) do |row|
+    @rows.each do |row|
       row = row.map do |cell|
         if cell == "noughts"
           "O"
@@ -60,23 +61,18 @@ class Game
   end
 
   def check_for_winner
-    self.board.each_slice(3) do |row|
-      if row.all?
-        if row.uniq.length == 1
+    @groups.each do |group|
+      if group.all?
+        if group.uniq.length == 1
           self.declare_winner
         end
-      end
-    end
-    self.board[0..2].each_with_index do |cell, index|
-      if cell && cell == self.board[index + 3] && cell == self.board[index + 6]
-        self.declare_winner
       end
     end
   end
 
   def declare_winner 
     @winner = self.current_player
-    puts "Hurrah! We have a winner! Well done Player #{self.current_player.id}"
+    puts "Hurrah! We have a winner! Well done Player #{@winner.id}"
     exit
   end
 
@@ -105,5 +101,4 @@ class Player
   end
 end
 
-new_game = Game.new()
-new_game.make_groups
+Game.new()
