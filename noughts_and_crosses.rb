@@ -8,11 +8,13 @@ class Game
     @current_player = @player_one
     @board = Array.new(9)
     @@players.push(@player_one, @player_two)
+    self.game()
   end
 
-  def switch_players
-    @@players.rotate!
-    @current_player = @@players[0]
+  def game 
+    until !self.board.any?(nil) || @winner
+      self.round()
+    end
   end
 
   def round
@@ -40,6 +42,11 @@ class Game
     end
     puts board_interface
   end
+
+  def switch_players
+    @@players.rotate!
+    @current_player = @@players[0]
+  end
 end
 
 class Player
@@ -61,7 +68,4 @@ class Player
   end
 end
 
-new_game = Game.new()
-4.times do 
-  new_game.round
-end
+Game.new()
