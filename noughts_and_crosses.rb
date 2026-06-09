@@ -1,5 +1,6 @@
 class Game 
   @@players = []
+  attr_accessor :board
   
   def initialize 
     @player_one = Player.new("noughts", 1)
@@ -17,10 +18,27 @@ class Game
   def round
     puts "Player #{@current_player.id} (#{@current_player.symbol}) - it's your turn to pick a cell!"
     puts "Enter a number:"
-    chosen_cell = gets().chomp.to_i
+    chosen_cell = gets().chomp.to_i - 1
     @current_player.assign_cell(@board, chosen_cell)
-    puts @board
+    self.render_board()
     self.switch_players
+  end
+
+  def render_board
+    board_interface = []
+    self.board.each_slice (3) do |row|
+      row = row.map do |cell|
+        if cell == "noughts"
+          "O"
+        elsif cell == "crosses"
+          "X"
+        else " "
+        end
+      end
+      row = row.join(" | ")
+      board_interface.push(row)
+    end
+    puts board_interface
   end
 end
 
@@ -34,14 +52,10 @@ class Player
 
   def assign_cell (board, cell)
     if !board[cell] 
-      if @symbol == "noughts"
-        board[cell] = "O"
-      elsif @symbol == "crosses"
-        board[cell] = "X"
-      end
+      board[cell] = self.symbol
     else 
-      puts "Hmmm Cell #{cell} seems to be taken- try somewhere else"
-      chosen_cell = gets().chomp.to_i
+      puts "Hmmm Cell #{cell + 1} seems to be taken- try somewhere else"
+      chosen_cell = gets().chomp.to_i - 1
       assign_cell(board, chosen_cell)
     end
   end
