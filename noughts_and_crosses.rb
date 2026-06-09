@@ -13,6 +13,15 @@ class Game
     @@players.rotate!
     @current_player = @@players[0]
   end
+
+  def round
+    puts "Player #{@current_player.id} (#{@current_player.symbol}) - it's your turn to pick a cell!"
+    puts "Enter a number:"
+    chosen_cell = gets().chomp.to_i
+    @current_player.assign_cell(@board, chosen_cell)
+    puts @board
+    self.switch_players
+  end
 end
 
 class Player
@@ -36,4 +45,9 @@ class Player
       assign_cell(board, chosen_cell)
     end
   end
+end
+
+new_game = Game.new()
+4.times do 
+  new_game.round
 end
